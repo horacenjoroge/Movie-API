@@ -5,131 +5,198 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Movie Ratings - Search, review, and track your favorite movies">
+    <meta name="theme-color" content="#032541">
+
+    <!-- Fonts and Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Bootstrap and Custom CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="/index.3b841883.css">
-    <title>Movie Ratings</title>
+
+    <title>MovieRatings - Search, Review, and Track Your Favorite Movies</title>
 </head>
 
 <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">MovieRatings</a>
+    <!-- Header Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#" aria-label="MovieRatings Home">
+                <i class="fas fa-film me-2" aria-hidden="true"></i>MovieRatings
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">Home</a>
+                        <a class="nav-link active" href="#"><i class="fas fa-home me-1" aria-hidden="true"></i>Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">About Us</a>
+                        <a class="nav-link" href="#"><i class="fas fa-info-circle me-1" aria-hidden="true"></i>About</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Watchlist</a>
+                        <a class="nav-link" href="#watchlist"><i class="fas fa-list me-1" aria-hidden="true"></i>Watchlist</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Favorite Movies</a>
+                        <a class="nav-link" href="#favorites"><i class="fas fa-heart me-1" aria-hidden="true"></i>Favorites</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <!-- Carousel for Highest Rated Movies -->
-    <div id="topRatedCarousel" class="carousel slide mt-3" data-bs-ride="carousel">
-        <div class="carousel-inner" id="carouselItems">
-            <!-- Carousel items will be dynamically added here -->
-        </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#topRatedCarousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#topRatedCarousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
-    </div>
-
-    <!-- Movie Search Section -->
-    <div class="container mt-4">
-        <h1>Movie Search</h1>
-        <form class="search-form">
-            <input type="text" class="search-input" placeholder="Search for a movie...">
-            <button type="submit">Search</button>
-        </form>
-        <div class="image-container">
-            <!-- Movie images will be displayed here -->
-        </div>
-    </div>
-
-    <!-- Reviews Section -->
-    <div class="container mt-4">
-        <h2>Your Reviews</h2>
-        <div id="reviews-display"></div>
-        <textarea id="review-text" placeholder="Write your review here..." rows="4"></textarea>
-        <input type="number" id="rating" min="1" max="5" placeholder="Rating (1-5)">
-        <button id="submit-review">Submit Review</button>
-    </div>
-
-    <!-- Watchlist and Favourites Section -->
-    <div class="container mt-4">
-        <h2>Your Watchlist</h2>
-        <div class="movie-container" id="watchlist-container">
-            <!-- Movie cards will be dynamically inserted here -->
-        </div>
-
-        <h2>Your Favourite Movies</h2>
-        <div class="movie-container" id="favorites-container">
-            <!-- Movie cards will be dynamically inserted here -->
-        </div>
-    </div>
-
-    <footer>
-        <div class="footer-content">
-            <div class="social-links">
-                <h3>Follow MovieRatings on social</h3>
-                <a href="#" target="_blank" class="fab fa-facebook"></a>
-                <a href="#" target="_blank" class="fab fa-twitter"></a>
-                <a href="#" target="_blank" class="fab fa-instagram"></a>
-                <!-- Add more social media icons as needed -->
+    <main>
+        <!-- Featured Movies Carousel -->
+        <section class="featured-section" aria-label="Featured Movies">
+            <div class="container-fluid px-0">
+                <div id="topRatedCarousel" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <!-- Carousel items will be dynamically added here -->
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#topRatedCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#topRatedCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
             </div>
-            <div class="app-links">
-                <h3>Get the MovieRatings app</h3>
-                <p>For Android and iOS</p>
-                <a href="#" class="app-store-link">Download on the App Store</a>
-                <a href="#" class="google-play-link">Get it on Google Play</a>
+        </section>
+
+        <!-- Search Section -->
+        <section class="search-section py-5" aria-label="Movie Search">
+            <div class="container">
+                <h1 class="text-center mb-4">Discover Movies</h1>
+                <form class="search-form" role="search">
+                    <div class="input-group">
+                        <input type="search" class="search-input form-control" placeholder="Search for movies..." aria-label="Search for movies" required="">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-search me-2" aria-hidden="true"></i>Search
+                        </button>
+                    </div>
+                </form>
+                <div class="loading" style="display: none" role="status">
+                    <div class="spinner" aria-label="Loading..."></div>
+                </div>
+                <div class="image-container mt-4" role="region" aria-label="Search Results">
+                    <!-- Search results will be displayed here -->
+                </div>
             </div>
-            <div class="company-info">
-                <ul>
-                    <li><a href="#">Help</a></li>
-                    <li><a href="#">Site Index</a></li>
-                    <li><a href="#">MovieRatingsPro</a></li>
-                    <li><a href="#">Box Office Mojo</a></li>
-                    <li><a href="#">License MovieRatingsData</a></li>
-                </ul>
+        </section>
+
+        <!-- Reviews Section -->
+        <section class="reviews-section py-5 bg-light" aria-label="Movie Reviews">
+            <div class="container">
+                <div class="reviews-wrapper">
+                    <h2 class="mb-4">Your Reviews</h2>
+                    <div id="reviews-display" class="reviews-list mb-4" role="list">
+                        <!-- Existing reviews will be displayed here -->
+                    </div>
+                    <form class="review-form" aria-label="Write a review">
+                        <textarea id="review-text" class="form-control mb-3" placeholder="Write your review here..." rows="4" required=""></textarea>
+                        <div class="d-flex gap-3 align-items-center mb-3">
+                            <input type="number" id="rating" class="form-control" min="1" max="5" placeholder="Rating (1-5)" required="" aria-label="Rating from 1 to 5">
+                            <button type="submit" id="submit-review" class="btn btn-primary">
+                                <i class="fas fa-paper-plane me-2" aria-hidden="true"></i>Submit Review
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="legal-info">
-                <ul>
-                    <li><a href="#">Press Room</a></li>
-                    <li><a href="#">Advertising</a></li>
-                    <li><a href="#">Jobs</a></li>
-                    <li><a href="#">Conditions of Use</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
-                    <li><a href="#">Your Ads Privacy Choices</a></li>
-                </ul>
-                <p>© 1990-2024 by MovieRatings.com, Inc.</p>
+        </section>
+
+        <!-- Lists Section -->
+        <section class="lists-section py-5" aria-label="Movie Lists">
+            <div class="container">
+                <!-- Watchlist -->
+                <div class="watchlist-container mb-5">
+                    <h2 class="mb-4" id="watchlist">
+                        <i class="fas fa-list me-2" aria-hidden="true"></i>Your Watchlist
+                    </h2>
+                    <div class="movie-container" id="watchlist-movies" role="list">
+                        <!-- Watchlist movies will be dynamically inserted here -->
+                    </div>
+                </div>
+
+                <!-- Favorites -->
+                <div class="favorites-container">
+                    <h2 class="mb-4" id="favorites">
+                        <i class="fas fa-heart me-2" aria-hidden="true"></i>Your Favorites
+                    </h2>
+                    <div class="movie-container" id="favorites-movies" role="list">
+                        <!-- Favorite movies will be dynamically inserted here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <!-- Social Links -->
+                <div class="social-links">
+                    <h3><i class="fas fa-share-alt me-2" aria-hidden="true"></i>Connect With Us</h3>
+                    <div class="social-icons">
+                        <a href="#" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                        <a href="#" target="_blank" rel="noopener" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" target="_blank" rel="noopener" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+
+                <!-- App Links -->
+                <div class="app-links">
+                    <h3><i class="fas fa-mobile-alt me-2" aria-hidden="true"></i>Get Our App</h3>
+                    <p>Available for Android and iOS</p>
+                    <a href="#" class="app-store-link" rel="noopener">
+                        <i class="fab fa-apple me-2" aria-hidden="true"></i>App Store
+                    </a>
+                    <a href="#" class="google-play-link" rel="noopener">
+                        <i class="fab fa-google-play me-2" aria-hidden="true"></i>Google Play
+                    </a>
+                </div>
+
+                <!-- Quick Links -->
+                <nav class="company-info">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Site Index</a></li>
+                        <li><a href="#">MovieRatingsPro</a></li>
+                        <li><a href="#">Box Office Data</a></li>
+                        <li><a href="#">API Services</a></li>
+                    </ul>
+                </nav>
+
+                <!-- Legal Info -->
+                <nav class="legal-info">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="#">Press Room</a></li>
+                        <li><a href="#">Advertising</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Terms of Use</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Cookie Preferences</a></li>
+                    </ul>
+                    <p class="copyright">© 1990-2024 MovieRatings.com, Inc. All rights reserved.</p>
+                </nav>
             </div>
         </div>
     </footer>
 
-    <!-- JavaScript -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/index.18dd1764.js"></script>
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="/index.18dd1764.js" defer=""></script>
 <script src="/Movie-API.3464ddca.js"></script></body>
 
 </html>
