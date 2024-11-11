@@ -243,3 +243,7 @@ img {
 .review-item:hover .delete-review {
     opacity: 1;
 }
+
+html {
+    scroll-behavior: smooth;
+}
