@@ -7,8 +7,10 @@ const CONFIG = {
     IMAGE_LAZY_LOADING: true,
     STORAGE_KEYS: {
         WATCHLIST: "watchlist",
-        FAVORITES: "favorites"
-    }
+        FAVORITES: "favorites",
+        REVIEWS: "movie-reviews"
+    },
+    MAX_RATING: 5
 };
 // Utility Functions
 const debounce = (func, wait)=>{
@@ -27,14 +29,130 @@ const sanitizeString = (str)=>{
     div.textContent = str;
     return div.innerHTML.replace(/"/g, "&quot;");
 };
+// New Review Manager Class
+class ReviewManager {
+    constructor(){
+        this.reviews = this.loadReviews();
+        this.reviewForm = document.querySelector(".review-form");
+        this.reviewsDisplay = document.getElementById("reviews-display");
+        this.setupEventListeners();
+    }
+    loadReviews() {
+        try {
+            const reviews = localStorage.getItem(CONFIG.STORAGE_KEYS.REVIEWS);
+            return reviews ? JSON.parse(reviews) : {};
+        } catch (error) {
+            console.error("Error loading reviews:", error);
+            return {};
+        }
+    }
+    setupEventListeners() {
+        if (!this.reviewForm) return;
+        this.reviewForm.addEventListener("submit", (e)=>{
+            e.preventDefault();
+            const reviewText = document.getElementById("review-text").value;
+            const rating = document.getElementById("rating").value;
+            const movieId = this.reviewForm.dataset.movieId;
+            const movieName = this.reviewForm.dataset.movieName;
+            if (movieId && movieName) this.addReview(movieId, movieName, reviewText, rating);
+            else app.notificationManager.show("Please select a movie to review", "error");
+        });
+    }
+    addReview(movieId, movieName, reviewText, rating) {
+        if (!movieId || !reviewText || !rating) return;
+        const review = {
+            movieId,
+            movieName,
+            reviewText,
+            rating: Number(rating),
+            date: new Date().toISOString()
+        };
+        if (!this.reviews[movieId]) this.reviews[movieId] = [];
+        this.reviews[movieId].push(review);
+        this.saveReviews();
+        this.displayReviews();
+        this.resetForm();
+        app.notificationManager.show("Review added successfully", "success");
+    }
+    saveReviews() {
+        try {
+            localStorage.setItem(CONFIG.STORAGE_KEYS.REVIEWS, JSON.stringify(this.reviews));
+        } catch (error) {
+            console.error("Error saving reviews:", error);
+        }
+    }
+    displayReviews() {
+        if (!this.reviewsDisplay) return;
+        this.reviewsDisplay.innerHTML = "";
+        let hasReviews = false;
+        Object.values(this.reviews).flat().sort((a, b)=>{
+            return new Date(b.date) - new Date(a.date);
+        }).forEach((review)=>{
+            hasReviews = true;
+            const reviewElement = this.createReviewElement(review);
+            this.reviewsDisplay.appendChild(reviewElement);
+        });
+        if (!hasReviews) this.reviewsDisplay.innerHTML = '<p class="text-center">No reviews yet. Watch some movies and share your thoughts!</p>';
+    }
+    createReviewElement(review) {
+        const reviewDiv = document.createElement("div");
+        reviewDiv.className = "review-item mb-3 p-3 bg-white rounded shadow-sm";
+        const stars = "\u2605".repeat(review.rating) + "\u2606".repeat(CONFIG.MAX_RATING - review.rating);
+        const date = new Date(review.date).toLocaleDateString();
+        reviewDiv.innerHTML = `
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <h4 class="movie-title h5 mb-0">${sanitizeString(review.movieName)}</h4>
+                <span class="text-warning">${stars}</span>
+            </div>
+            <p class="review-text mb-2">${sanitizeString(review.reviewText)}</p>
+            <div class="text-muted small">
+                <em>Reviewed on ${date}</em>
+                <button class="btn btn-sm btn-outline-danger float-end delete-review" 
+                        data-movie-id="${review.movieId}">
+                    <i class="fas fa-trash-alt"></i> Delete
+                </button>
+            </div>
+        `;
+        reviewDiv.querySelector(".delete-review").addEventListener("click", ()=>{
+            this.deleteReview(review.movieId, review.date);
+        });
+        return reviewDiv;
+    }
+    deleteReview(movieId, date) {
+        if (this.reviews[movieId]) {
+            this.reviews[movieId] = this.reviews[movieId].filter((r)=>r.date !== date);
+            if (this.reviews[movieId].length === 0) delete this.reviews[movieId];
+            this.saveReviews();
+            this.displayReviews();
+            app.notificationManager.show("Review deleted", "success");
+        }
+    }
+    resetForm() {
+        if (this.reviewForm) {
+            this.reviewForm.reset();
+            delete this.reviewForm.dataset.movieId;
+            delete this.reviewForm.dataset.movieName;
+        }
+    }
+    getMovieRating(movieId) {
+        if (!this.reviews[movieId]) return null;
+        const ratings = this.reviews[movieId].map((r)=>r.rating);
+        const average = ratings.reduce((a, b)=>a + b, 0) / ratings.length;
+        return average.toFixed(1);
+    }
+    hasReviewedMovie(movieId) {
+        return !!this.reviews[movieId]?.length;
+    }
+}
 // Main App Class
 class MovieApp {
     constructor(){
         this.initializeElements();
+        this.reviewManager = new ReviewManager(); // Initialize reviewManager first
         this.initializeEventListeners();
         this.watchlistManager = new StorageManager(CONFIG.STORAGE_KEYS.WATCHLIST);
         this.favoritesManager = new StorageManager(CONFIG.STORAGE_KEYS.FAVORITES);
-        this.carouselManager = new CarouselManager();
+        this.carouselManager = new CarouselManager(this.reviewManager); // Pass reviewManager
         this.notificationManager = new NotificationManager();
     }
     initializeElements() {
@@ -127,10 +245,11 @@ class NotificationManager {
 }
 // Carousel Manager Class
 class CarouselManager {
-    constructor(){
+    constructor(reviewManager){
         this.carouselInner = document.querySelector("#topRatedCarousel .carousel-inner");
         this.initializeIntersectionObserver();
         this.notificationManager = new NotificationManager();
+        this.reviewManager = reviewManager;
     }
     initializeIntersectionObserver() {
         this.observer = new IntersectionObserver((entries)=>{
@@ -157,14 +276,16 @@ class CarouselManager {
         });
     }
     createCarouselItem(show, isActive, watchlistManager, favoritesManager) {
-        const { name, image, rating } = show.show;
-        // Validate required data
+        const { id, name, image, rating } = show.show;
         if (!name || !image?.original) {
             console.error("Invalid show data:", show);
             return;
         }
         const sanitizedName = sanitizeString(name);
         const sanitizedImage = sanitizeString(image.original);
+        // Use this.reviewManager instead of app.reviewManager
+        const userRating = this.reviewManager.getMovieRating(id);
+        const hasReview = this.reviewManager.hasReviewedMovie(id);
         const carouselItem = document.createElement("div");
         carouselItem.classList.add("carousel-item");
         if (isActive) carouselItem.classList.add("active");
@@ -176,7 +297,8 @@ class CarouselManager {
                  onerror="this.src='https://via.placeholder.com/1200x675?text=No+Image'">
             <div class="carousel-caption d-none d-md-block">
                 <h5>${sanitizedName}</h5>
-                <p>Rating: ${rating?.average || "N/A"}</p>
+                <p>TVDB Rating: ${rating?.average || "N/A"}</p>
+                ${userRating ? `<p class="user-rating">Your Rating: ${userRating} \u{2605}</p>` : ""}
                 <div class="button-group">
                     <button class="btn btn-primary watchlist-btn" aria-label="Add ${sanitizedName} to Watchlist">
                         <i class="fas fa-list me-2" aria-hidden="true"></i>Add to Watchlist
@@ -184,21 +306,30 @@ class CarouselManager {
                     <button class="btn btn-success favorite-btn" aria-label="Add ${sanitizedName} to Favorites">
                         <i class="fas fa-heart me-2" aria-hidden="true"></i>Add to Favorites
                     </button>
+                    <button class="btn btn-info review-btn" 
+                            aria-label="${hasReview ? "Update" : "Add"} review for ${sanitizedName}">
+                        <i class="fas fa-star me-2" aria-hidden="true"></i>
+                        ${hasReview ? "Update Review" : "Add Review"}
+                    </button>
                 </div>
             </div>
         `;
         const watchlistBtn = carouselItem.querySelector(".watchlist-btn");
         const favoriteBtn = carouselItem.querySelector(".favorite-btn");
+        const reviewBtn = carouselItem.querySelector(".review-btn");
         watchlistBtn.addEventListener("click", ()=>{
-            if (name && image.original) {
-                watchlistManager.add(name, image.original);
-                this.notificationManager.show("Added to watchlist", "success");
-            }
+            watchlistManager.add(name, image.original);
+            this.notificationManager.show("Added to watchlist", "success");
         });
         favoriteBtn.addEventListener("click", ()=>{
-            if (name && image.original) {
-                favoritesManager.add(name, image.original);
-                this.notificationManager.show("Added to favorites", "success");
+            favoritesManager.add(name, image.original);
+            this.notificationManager.show("Added to favorites", "success");
+        });
+        reviewBtn.addEventListener("click", ()=>{
+            const reviewForm = document.querySelector(".review-form");
+            if (reviewForm) {
+                reviewForm.dataset.movieId = id;
+                reviewForm.dataset.movieName = name;
             }
         });
         const img = carouselItem.querySelector("img");
@@ -333,6 +464,8 @@ try {
 window.clearStorage = ()=>{
     app.watchlistManager.clear();
     app.favoritesManager.clear();
+    // Add this line to clear reviews too
+    localStorage.removeItem(CONFIG.STORAGE_KEYS.REVIEWS);
     console.log("Storage cleared");
 };
 

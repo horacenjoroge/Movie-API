@@ -91,26 +91,44 @@
             </div>
         </section>
 
-        <!-- Reviews Section -->
-        <section class="reviews-section py-5 bg-light" aria-label="Movie Reviews">
-            <div class="container">
-                <div class="reviews-wrapper">
-                    <h2 class="mb-4">Your Reviews</h2>
-                    <div id="reviews-display" class="reviews-list mb-4" role="list">
-                        <!-- Existing reviews will be displayed here -->
-                    </div>
-                    <form class="review-form" aria-label="Write a review">
-                        <textarea id="review-text" class="form-control mb-3" placeholder="Write your review here..." rows="4" required=""></textarea>
-                        <div class="d-flex gap-3 align-items-center mb-3">
-                            <input type="number" id="rating" class="form-control" min="1" max="5" placeholder="Rating (1-5)" required="" aria-label="Rating from 1 to 5">
-                            <button type="submit" id="submit-review" class="btn btn-primary">
-                                <i class="fas fa-paper-plane me-2" aria-hidden="true"></i>Submit Review
-                            </button>
+    <!-- Reviews Section -->
+    <section class="reviews-section py-5 bg-light">
+        <div class="container">
+            <h2 class="mb-4">Movie Reviews</h2>
+    
+            <!-- Review Form -->
+            <form class="review-form mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title h5 mb-3">Write a Review</h3>
+                        <div class="mb-3">
+                            <label for="rating" class="form-label">Rating</label>
+                            <select class="form-select" id="rating" required="">
+                                <option value="">Select a rating</option>
+                                <option value="1">1 - Poor</option>
+                                <option value="2">2 - Fair</option>
+                                <option value="3">3 - Good</option>
+                                <option value="4">4 - Very Good</option>
+                                <option value="5">5 - Excellent</option>
+                            </select>
                         </div>
-                    </form>
+                        <div class="mb-3">
+                            <label for="review-text" class="form-label">Your Review</label>
+                            <textarea class="form-control" id="review-text" rows="4" placeholder="Share your thoughts about this movie..." required=""></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane me-2"></i>Submit Review
+                        </button>
+                    </div>
                 </div>
+            </form>
+    
+            <!-- Reviews Display -->
+            <div id="reviews-display">
+                <!-- Reviews will be dynamically inserted here -->
             </div>
-        </section>
+        </div>
+    </section>
 
         <!-- Lists Section -->
         <section class="lists-section py-5" aria-label="Movie Lists">

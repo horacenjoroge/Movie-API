@@ -215,3 +215,31 @@ img {
         background: #2d2d2d;
     }
 }
+
+/* Add to your movie.css */
+
+.review-item {
+    transition: transform 0.2s ease;
+}
+
+.review-item:hover {
+    transform: translateY(-2px);
+}
+
+.review-text {
+    white-space: pre-wrap;
+}
+
+.user-rating {
+    color: #ffc107;
+    font-weight: bold;
+}
+
+.delete-review {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.review-item:hover .delete-review {
+    opacity: 1;
+}
