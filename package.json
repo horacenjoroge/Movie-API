@@ -1,17 +1,18 @@
 {
-  "name": "movie-api",
+  "name": "movie-ratings",
   "version": "1.0.0",
-  "description": "",
-  "main": "movie.js",
+  "description": "Movie Ratings - Search, review, and track your favorite movies",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "parcel index.html",
-     "build": "parcel build index.html"
+    "build": "parcel build index.html --public-url ./",
+    "clean": "rm -rf dist/ .parcel-cache/",
+    "prebuild": "npm run clean"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["movies", "ratings", "reviews"],
+  "author": "group",
   "license": "ISC",
   "devDependencies": {
-    "parcel": "^2.12.0"
+    "parcel": "^2.8.3"
   }
 }
