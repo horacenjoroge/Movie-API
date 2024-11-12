@@ -6,10 +6,10 @@ const CONFIG = {
     NOTIFICATION_DURATION: 3000,
     IMAGE_LAZY_LOADING: true,
     STORAGE_KEYS: {
-        WATCHLIST: 'watchlist',
-        FAVORITES: 'favorites',
-        REVIEWS: 'movie-reviews',
-        MOVIE_LIST: 'movie-list'
+        WATCHLIST: 'reelrate_watchlist',
+        FAVORITES: 'reelrate_favorites',
+        REVIEWS: 'reelrate_reviews',
+        MOVIE_LIST: 'reelrate_movie_list'
     },
        MAX_RATING: 5
 };

@@ -8,6 +8,8 @@
     --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     --transition-speed: 0.3s;
     --border-radius: 8px;
+    --body-font: 'Space Grotesk', sans-serif;
+    --brand-font: 'Orbitron', sans-serif;
 }
 
 /* Reset and Base Styles */
@@ -473,5 +475,71 @@ html {
     .movie-listings-grid .movie-card {
         width: 100%;
         /* 1 card per row */
+    }
+}
+
+/* Custom Properties */
+:root {
+    --primary-color: #032541;
+    --secondary-color: #01b4e4;
+    --text-light: #ffffff;
+    --text-dark: #333333;
+    --background-light: #090000;
+    --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --transition-speed: 0.3s;
+    --border-radius: 8px;
+    --body-font: 'Space Grotesk', sans-serif;
+    --brand-font: 'Orbitron', sans-serif;
+}
+
+/* Reset and Base Styles */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--body-font);
+    line-height: 1.6;
+    color: var(--text-dark);
+    background-color: var(--background-light);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Brand Styling */
+.navbar-brand {
+    font-family: var(--brand-font);
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--secondary-color) !important;
+    text-transform: none;
+    transition: color 0.3s ease;
+    animation: brandEntry 0.5s ease-out forwards;
+}
+
+.navbar-brand .reel {
+    color: var(--secondary-color);
+}
+
+.navbar-brand .rate {
+    color: #eb9343;
+    margin-left: 2px;
+}
+
+@keyframes brandEntry {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
     }
 }

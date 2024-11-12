@@ -1,20 +1,3 @@
-:root {
-  --primary-color: #032541;
-  --secondary-color: #01b4e4;
-  --text-light: #fff;
-  --text-dark: #333;
-  --background-light: #090000;
-  --card-shadow: 0 4px 6px #0000001a;
-  --transition-speed: .3s;
-  --border-radius: 8px;
-}
-
-*, :before, :after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
 body {
   color: var(--text-dark);
   background-color: var(--background-light);
@@ -428,6 +411,67 @@ html {
 @media (width <= 480px) {
   .movie-listings-grid .movie-card {
     width: 100%;
+  }
+}
+
+:root {
+  --primary-color: #032541;
+  --secondary-color: #01b4e4;
+  --text-light: #fff;
+  --text-dark: #333;
+  --background-light: #090000;
+  --card-shadow: 0 4px 6px #0000001a;
+  --transition-speed: .3s;
+  --border-radius: 8px;
+  --body-font: "Space Grotesk", sans-serif;
+  --brand-font: "Orbitron", sans-serif;
+}
+
+*, :before, :after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--body-font);
+  color: var(--text-dark);
+  background-color: var(--background-light);
+  flex-direction: column;
+  min-height: 100vh;
+  line-height: 1.6;
+  display: flex;
+}
+
+.navbar-brand {
+  font-family: var(--brand-font);
+  letter-spacing: 2px;
+  text-transform: none;
+  font-size: 2rem;
+  font-weight: 700;
+  transition: color .3s;
+  animation: .5s ease-out forwards brandEntry;
+  color: var(--secondary-color) !important;
+}
+
+.navbar-brand .reel {
+  color: var(--secondary-color);
+}
+
+.navbar-brand .rate {
+  color: #eb9343;
+  margin-left: 2px;
+}
+
+@keyframes brandEntry {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 /*# sourceMappingURL=index.3b841883.css.map */
